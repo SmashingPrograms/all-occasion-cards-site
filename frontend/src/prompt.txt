@@ -1,0 +1,664 @@
+// App.tsx
+import { ThemeProvider } from '@emotion/react';
+import styled from '@emotion/styled';
+import { theme } from './theme';
+import Header from './components/Header';
+import Hero from './components/Hero';
+import Gallery from './components/Gallery';
+import About from './components/About';
+import Contact from './components/Contact';
+import Footer from './components/Footer';
+
+const GlobalStyles = styled.div`
+  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: ${theme.fonts.body};
+    background-color: ${theme.colors.background};
+    color: ${theme.colors.text};
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: ${theme.fonts.heading};
+  }
+`;
+
+const AppContainer = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
+const MainContent = styled.main`
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+`;
+
+function App() {
+  return (
+    <ThemeProvider theme={theme}>
+      <GlobalStyles>
+        <AppContainer>
+          <Header />
+          <MainContent>
+            <Hero />
+            <Gallery />
+            <About />
+            <Contact />
+          </MainContent>
+          <Footer />
+        </AppContainer>
+      </GlobalStyles>
+    </ThemeProvider>
+  );
+}
+
+export default App;
+
+
+// main.tsx
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.tsx'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+
+
+// theme.d.ts
+import '@emotion/react';
+
+declare module '@emotion/react' {
+  export interface Theme {
+    colors: {
+      primary: string;
+      secondary: string;
+      background: string;
+      text: string;
+      accent: string;
+      wood: string;
+      paper: string;
+    };
+    fonts: {
+      heading: string;
+      body: string;
+    };
+    shadows: {
+      subtle: string;
+      medium: string;
+    };
+    borderRadius: {
+      small: string;
+      medium: string;
+      large: string;
+    };
+  }
+} 
+
+<!-- index.css -->
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+
+// vite-env.d.ts
+/// <reference types="vite/client" />
+
+
+// theme.ts
+export const theme = {
+  colors: {
+    primary: '#FFD6A5', // Soft peach
+    secondary: '#FDFFB6', // Warm yellow
+    background: '#FFFBF5', // Warm white
+    text: '#4A4A4A', // Soft dark gray
+    accent: '#A0C4FF', // Soft blue for accents
+    wood: '#E6D5AC', // Subtle wood tone
+    paper: '#FFF9F0', // Stationery color
+  },
+  fonts: {
+    heading: "'Dancing Script', cursive",
+    body: "'Quicksand', sans-serif",
+  },
+  shadows: {
+    subtle: '0 2px 4px rgba(0,0,0,0.1)',
+    medium: '0 4px 8px rgba(0,0,0,0.1)',
+  },
+  borderRadius: {
+    small: '4px',
+    medium: '8px',
+    large: '16px',
+  },
+}; 
+
+// components/Gallery.tsx
+import styled from '@emotion/styled';
+import { motion } from 'framer-motion';
+
+const GallerySection = styled.section`
+  padding: 4rem 0;
+  position: relative;
+`;
+
+const SectionTitle = styled.h2`
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: ${props => props.theme.colors.text};
+`;
+
+const CardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  position: relative;
+`;
+
+const CardPlaceholder = styled(motion.div)`
+  background-color: ${props => props.theme.colors.paper};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  box-shadow: ${props => props.theme.shadows.medium};
+  aspect-ratio: 3/4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: ${props => props.theme.fonts.heading};
+  color: ${props => props.theme.colors.text};
+  opacity: 0.8;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+`;
+
+const Gallery = () => {
+  const cards = Array.from({ length: 6 }, (_, i) => ({
+    id: i,
+    rotation: Math.random() * 10 - 5, // Random rotation between -5 and 5 degrees
+  }));
+
+  return (
+    <GallerySection id="gallery">
+      <SectionTitle>Our Collection</SectionTitle>
+      <CardGrid>
+        {cards.map((card) => (
+          <CardPlaceholder
+            key={card.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: card.id * 0.1 }}
+            style={{ transform: `rotate(${card.rotation}deg)` }}
+            whileHover={{ scale: 1.05, rotate: 0 }}
+          >
+            Card Sample {card.id + 1}
+          </CardPlaceholder>
+        ))}
+      </CardGrid>
+    </GallerySection>
+  );
+};
+
+export default Gallery; 
+
+// components/Hero.tsx
+import styled from '@emotion/styled';
+import { motion } from 'framer-motion';
+
+const HeroSection = styled.section`
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${props => props.theme.colors.secondary};
+  border-radius: ${props => props.theme.borderRadius.large};
+  margin: 2rem 0;
+  padding: 4rem;
+  position: relative;
+  overflow: hidden;
+`;
+
+const WoodBackground = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: ${props => props.theme.colors.wood};
+  opacity: 0.1;
+  z-index: 0;
+`;
+
+const Content = styled(motion.div)`
+  text-align: center;
+  z-index: 1;
+  max-width: 800px;
+`;
+
+const Title = styled(motion.h1)`
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  color: ${props => props.theme.colors.text};
+`;
+
+const Subtitle = styled(motion.p)`
+  font-size: 1.5rem;
+  color: ${props => props.theme.colors.text};
+  opacity: 0.9;
+  margin-bottom: 2rem;
+`;
+
+const Hero = () => {
+  return (
+    <HeroSection>
+      <WoodBackground />
+      <Content
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        <Title
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          Handcrafted Cards for Every Occasion
+        </Title>
+        <Subtitle
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          Bringing warmth and personality to your special moments with carefully crafted greeting cards
+        </Subtitle>
+      </Content>
+    </HeroSection>
+  );
+};
+
+export default Hero; 
+
+// components/Contact.tsx
+import styled from '@emotion/styled';
+import { motion } from 'framer-motion';
+import { FaEnvelope, FaPhone } from 'react-icons/fa';
+
+const ContactSection = styled.section`
+  padding: 4rem 0;
+  position: relative;
+`;
+
+const SectionTitle = styled.h2`
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: ${props => props.theme.colors.text};
+`;
+
+const ContactContainer = styled(motion.div)`
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: ${props => props.theme.colors.paper};
+  padding: 3rem;
+  border-radius: ${props => props.theme.borderRadius.medium};
+  box-shadow: ${props => props.theme.shadows.medium};
+  position: relative;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 48%, ${props => props.theme.colors.primary} 49%, ${props => props.theme.colors.primary} 51%, transparent 52%);
+    background-size: 20px 20px;
+    opacity: 0.1;
+    border-radius: ${props => props.theme.borderRadius.medium};
+  }
+`;
+
+const ContactInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+  z-index: 1;
+`;
+
+const ContactItem = styled(motion.div)`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.2rem;
+  color: ${props => props.theme.colors.text};
+`;
+
+const IconWrapper = styled.div`
+  color: ${props => props.theme.colors.primary};
+  font-size: 1.5rem;
+`;
+
+const Contact = () => {
+  return (
+    <ContactSection id="contact">
+      <SectionTitle>Get in Touch</SectionTitle>
+      <ContactContainer
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <ContactInfo>
+          <ContactItem
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <IconWrapper>
+              <FaEnvelope />
+            </IconWrapper>
+            <span>hello@alloccasioncards.com</span>
+          </ContactItem>
+          <ContactItem
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            <IconWrapper>
+              <FaPhone />
+            </IconWrapper>
+            <span>(555) 123-4567</span>
+          </ContactItem>
+        </ContactInfo>
+      </ContactContainer>
+    </ContactSection>
+  );
+};
+
+export default Contact; 
+
+// components/Footer.tsx
+import styled from '@emotion/styled';
+
+const FooterContainer = styled.footer`
+  background-color: ${props => props.theme.colors.primary};
+  padding: 2rem;
+  text-align: center;
+  margin-top: 4rem;
+`;
+
+const FooterText = styled.p`
+  color: ${props => props.theme.colors.text};
+  font-size: 1rem;
+  margin: 0;
+`;
+
+const Footer = () => {
+  return (
+    <FooterContainer>
+      <FooterText>
+        © {new Date().getFullYear()} All Occasion Cards. All rights reserved.
+      </FooterText>
+    </FooterContainer>
+  );
+};
+
+export default Footer; 
+
+// components/Header.tsx
+import styled from '@emotion/styled';
+import { motion } from 'framer-motion';
+
+const HeaderContainer = styled.header`
+  position: sticky;
+  top: 0;
+  background-color: ${props => props.theme.colors.primary};
+  padding: 1rem 2rem;
+  box-shadow: ${props => props.theme.shadows.subtle};
+  z-index: 1000;
+`;
+
+const Nav = styled.nav`
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Logo = styled(motion.h1)`
+  font-family: ${props => props.theme.fonts.heading};
+  font-size: 2rem;
+  color: ${props => props.theme.colors.text};
+  margin: 0;
+`;
+
+const NavLinks = styled.div`
+  display: flex;
+  gap: 2rem;
+`;
+
+const NavLink = styled(motion.a)`
+  color: ${props => props.theme.colors.text};
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  
+  &:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: ${props => props.theme.colors.text};
+    transition: width 0.3s ease;
+  }
+
+  &:hover:after {
+    width: 100%;
+  }
+`;
+
+const Header = () => {
+  return (
+    <HeaderContainer>
+      <Nav>
+        <Logo
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          All Occasion Cards
+        </Logo>
+        <NavLinks>
+          <NavLink href="#gallery" whileHover={{ scale: 1.05 }}>Gallery</NavLink>
+          <NavLink href="#about" whileHover={{ scale: 1.05 }}>About</NavLink>
+          <NavLink href="#contact" whileHover={{ scale: 1.05 }}>Contact</NavLink>
+        </NavLinks>
+      </Nav>
+    </HeaderContainer>
+  );
+};
+
+export default Header; 
+
+// components/About.tsx
+import styled from '@emotion/styled';
+import { motion } from 'framer-motion';
+
+const AboutSection = styled.section`
+  padding: 4rem 0;
+  background-color: ${props => props.theme.colors.primary};
+  border-radius: ${props => props.theme.borderRadius.large};
+  margin: 2rem 0;
+`;
+
+const AboutContainer = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+`;
+
+const SectionTitle = styled.h2`
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: ${props => props.theme.colors.text};
+`;
+
+const AboutContent = styled(motion.div)`
+  background-color: ${props => props.theme.colors.paper};
+  padding: 2rem;
+  border-radius: ${props => props.theme.borderRadius.medium};
+  box-shadow: ${props => props.theme.shadows.subtle};
+`;
+
+const Paragraph = styled.p`
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: ${props => props.theme.colors.text};
+`;
+
+const About = () => {
+  return (
+    <AboutSection id="about">
+      <AboutContainer>
+        <SectionTitle>About Us</SectionTitle>
+        <AboutContent
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <Paragraph>
+            Welcome to our cozy corner of creativity! We're passionate about crafting beautiful, 
+            heartfelt greeting cards that bring warmth and joy to every occasion. Each card is 
+            carefully designed with love and attention to detail, making your special moments 
+            even more memorable.
+          </Paragraph>
+          <Paragraph>
+            Our journey began with a simple idea: to create cards that feel like they were made 
+            by a friend, not a factory. We believe that the perfect card can speak volumes and 
+            create lasting connections between people. That's why we pour our hearts into every 
+            design, ensuring that each card carries its own unique personality and charm.
+          </Paragraph>
+          <Paragraph>
+            Whether you're celebrating a birthday, expressing sympathy, or just want to brighten 
+            someone's day, we have a card that will help you convey your feelings perfectly. 
+            Each card is made with high-quality materials and designed to be treasured for years 
+            to come.
+          </Paragraph>
+        </AboutContent>
+      </AboutContainer>
+    </AboutSection>
+  );
+};
+
+export default About;
