@@ -21,3 +21,5 @@ npm test -- --coverage
 # Run specific test suite
 npm test -- --testNamePattern="Header Component"
 ```
+
+commit
