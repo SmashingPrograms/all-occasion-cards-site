@@ -14,8 +14,7 @@ Features:
 - Health check endpoint
 - Detailed API documentation
 
-Author: Backend Developer
-Date: 2024
+Date: 2025
 """
 
 from flask import Flask, jsonify, request, abort
